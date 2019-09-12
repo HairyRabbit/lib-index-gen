@@ -1,6 +1,6 @@
 {
   "name": "lib-index-gen",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Generate index.ts for utils like library",
   "scripts": {
     "start": "tsc -w",
