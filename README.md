@@ -4,7 +4,7 @@
 
 # ts-gen-index
 
-_Generate index.ts with special jsdoc tag_
+_Generate index.ts for utils like library_
 
 _`npx ts-gen-index`_
 
