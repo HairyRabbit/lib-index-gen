@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "description": "Generate index.ts with special jsdoc tag",
   "scripts": {
-    "start": "tsc -w"
+    "start": "tsc -w",
+    "build": "tsc",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -17,6 +19,7 @@
   },
   "homepage": "https://github.com/HairyRabbit/ts-gen-index#readme",
   "devDependencies": {
+    "@types/lodash": "^4.14.135",
     "@types/node": "^12.0.12",
     "jest": "^24.8.0",
     "ts-jest": "^24.0.2",
@@ -24,7 +27,10 @@
     "typescript": "^3.5.2"
   },
   "dependencies": {
-    "ts-morph": "^3.1.0"
+    "lodash": "^4.17.11",
+    "ts-morph": "^3.1.0",
+    "tslib": "^1.10.0",
+    "yargs": "^14.0.0"
   },
   "jest": {
     "preset": "ts-jest",

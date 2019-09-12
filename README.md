@@ -1,2 +1,13 @@
+<br/>
+
+<div align=center>
+
 # ts-gen-index
-Generate index.ts with special jsdoc tag
+
+_Generate index.ts with special jsdoc tag_
+
+_`npx ts-gen-index`_
+
+</div>
+
+<br />
