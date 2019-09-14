@@ -19,7 +19,6 @@ export default function generate(node: Node): Map<string, string> {
   return gen(node)
 
   function gen(node: Node, result: Map<string, string> = new Map): typeof result {
-    console.log(node)
     const { value, children } = node
     const { name: dirName, path: filePath, files } = value
     

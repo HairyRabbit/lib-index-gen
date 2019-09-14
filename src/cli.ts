@@ -4,11 +4,11 @@ export default function cli(args: string[] = process.argv.slice(2)): void {
   yargs
     .strict()
     .command(
-      "$0 <entry> [...options]",
+      "* [entry] [...options]",
       "",
       yargs => {
         return yargs
-          .positional("entry", { type: "string", demandOption: "true" })
+          .positional("entry", { type: "string", demandOption: "true", default: 'src' })
           .option("dryrun", { type: "boolean" });
       },
       args => {

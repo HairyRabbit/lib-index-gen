@@ -15,9 +15,18 @@ export default function render(entry: string, options: Options = {}) {
   const result = gen(node)
   for (const [name, content] of result) {
     if(dryrun) {
-      console.log(name, content)
+      console.log('')
+      console.log(`[[-------- ${name} --------`)
+      console.log(content)
+      console.log(`---------- ${name} --------]]`)
+      console.log('')
     } else {
-      fs.writeFileSync(path.resolve(entry, name), content, 'utf-8')
+      const filePath = path.resolve(entry, name)
+      if(fs.existsSync(filePath)) {
+        throw new Error(`File already exists ${filePath}`)
+      }
+      
+      fs.writeFileSync(filePath, content, 'utf-8')
     }
   }
 }
