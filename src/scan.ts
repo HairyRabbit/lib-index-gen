@@ -54,7 +54,7 @@ function scanChild(filePath: string): Node {
     
     if(dirent.isDirectory()) {
       acc.children.push(scanChild(nodePath))
-    } else if(dirent.isFile()) {
+    } else if(dirent.isFile() && /\.tsx?$/.test(path.extname(dirent.name))) {
       acc.value.files.push({ name, path: nodePath })
     }
 

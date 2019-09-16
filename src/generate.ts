@@ -23,9 +23,6 @@ export default function generate(node: Node): Map<string, string> {
     const { name: dirName, path: filePath, files } = value
     
     const isHasChildren = children.length !== 0
-
-    // if(isIndexFileExists) return
-    // console.log(node)
     
     const acc: string[] = []
 
@@ -41,6 +38,7 @@ export default function generate(node: Node): Map<string, string> {
       const sourceFile: SourceFile = project.addExistingSourceFile(filePath)
       const exportedDeclarations = sourceFile.getExportedDeclarations()
       const exportNames: string[] = []
+
       exportedDeclarations.forEach((nodes, key) => {
         const name: string = `default` === key ? `default as ${fileName}` : key
         const node = nodes[0]
@@ -67,8 +65,6 @@ export default function generate(node: Node): Map<string, string> {
     if(acc.length === 0) return result
     result.set(indexFilePath, acc.join('\n'))
     return result
-    // console.log(indexFilePath)
-    // console.log(acc.join('\n'))
   }
 
   function assertNameConflict(): void {
