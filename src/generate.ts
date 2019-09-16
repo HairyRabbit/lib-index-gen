@@ -1,4 +1,4 @@
-import { Project, SourceFile } from 'ts-morph'
+import { Project } from 'ts-morph'
 import path from 'path'
 import { Node } from './scan'
 
@@ -18,24 +18,25 @@ export default function generate(node: Node): Map<string, string> {
   assertNameConflict()
   return gen(node)
 
-  function gen(node: Node, result: Map<string, string> = new Map): typeof result {
+  function gen(node: Node, result: Map<string, string> = new Map, thunk?: (() => void)): typeof result {
     const { value, children } = node
-    const { name: dirName, path: filePath, files } = value
-    
-    const isHasChildren = children.length !== 0
-    
+    const { name: dirName, path: filePath, files, hasIndex } = value
     const acc: string[] = []
 
-    if(isHasChildren) {
+    if(0 !== children.length) {
       children.forEach(child => {
-        gen(child, result)
-        acc.push(`export * from './${child.value.name}'`)
+        gen(child, result, () => acc.push(`export * from './${child.value.name}'`))
       })
     }
 
+    if(hasIndex) {
+      console.debug(`${filePath} already has index file, skipped`)
+      return result
+    }
+
     files.forEach(({ name, path: filePath }) => {
-      const fileName: string = path.basename(name, path.extname(name))
-      const sourceFile: SourceFile = project.addExistingSourceFile(filePath)
+      const fileName = path.basename(name, path.extname(name))
+      const sourceFile = project.addExistingSourceFile(filePath)
       const exportedDeclarations = sourceFile.getExportedDeclarations()
       const exportNames: string[] = []
 
@@ -43,7 +44,7 @@ export default function generate(node: Node): Map<string, string> {
         const name: string = `default` === key ? `default as ${fileName}` : key
         const node = nodes[0]
         
-        console.debug(node.getText())
+        if(!node) console.debug(nodes, fileName)
         const leadingCommentRanges = node.getLeadingCommentRanges()
         if(0 !== leadingCommentRanges.length) {
           const text = leadingCommentRanges[0].getText()
@@ -64,6 +65,7 @@ export default function generate(node: Node): Map<string, string> {
     const indexFilePath: string = path.resolve(filePath, indexFileName)
 
     if(acc.length === 0) return result
+    thunk && thunk()
     result.set(indexFilePath, acc.join('\n'))
     return result
   }

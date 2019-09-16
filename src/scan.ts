@@ -10,6 +10,7 @@ interface Options {
 interface NodeValue {
   name: string
   path: string
+  hasIndex: boolean
   files: { name: string, path: string }[]
 }
 
@@ -37,6 +38,7 @@ function makeInitialNode(name: string, path: string): Node {
   const obj = <Node>Object.create(null)
   obj.value = Object.create(null)
   obj.value.name = name
+  obj.value.hasIndex = false
   obj.value.path = path
   obj.value.files = []
   obj.children = []
@@ -48,13 +50,13 @@ function scanChild(filePath: string): Node {
   const fileBaseName = path.basename(filePath)
   return list.reduce((acc, dirent) => {
     const name = dirent.name
-    // if(`index.ts` === name) acc.isIndexFileExists = true
 
     const nodePath = path.resolve(filePath, name)
     
     if(dirent.isDirectory()) {
       acc.children.push(scanChild(nodePath))
     } else if(dirent.isFile() && /\.tsx?$/.test(path.extname(dirent.name))) {
+      if(dirent.name.startsWith('index')) acc.value.hasIndex = true
       acc.value.files.push({ name, path: nodePath })
     }
 
