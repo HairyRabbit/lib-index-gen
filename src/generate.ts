@@ -43,6 +43,7 @@ export default function generate(node: Node): Map<string, string> {
         const name: string = `default` === key ? `default as ${fileName}` : key
         const node = nodes[0]
         
+        console.debug(node.getText())
         const leadingCommentRanges = node.getLeadingCommentRanges()
         if(0 !== leadingCommentRanges.length) {
           const text = leadingCommentRanges[0].getText()

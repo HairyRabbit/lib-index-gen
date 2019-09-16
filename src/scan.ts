@@ -34,23 +34,23 @@ function makeRootNotDirectoryError(): Error {
 }
 
 function makeInitialNode(name: string, path: string): Node {
-  const obj = Object.create(null)
-  obj.value = {}
+  const obj = <Node>Object.create(null)
+  obj.value = Object.create(null)
   obj.value.name = name
   obj.value.path = path
   obj.value.files = []
   obj.children = []
-  return obj as Node
+  return obj
 }
 
 function scanChild(filePath: string): Node {
-  const list: fs.Dirent[] = fs.readdirSync(filePath, { withFileTypes: true })
-  const fileBaseName: string = path.basename(filePath)
+  const list = fs.readdirSync(filePath, { withFileTypes: true })
+  const fileBaseName = path.basename(filePath)
   return list.reduce((acc, dirent) => {
-    const name: string = dirent.name
+    const name = dirent.name
     // if(`index.ts` === name) acc.isIndexFileExists = true
 
-    const nodePath: string = path.resolve(filePath, name)
+    const nodePath = path.resolve(filePath, name)
     
     if(dirent.isDirectory()) {
       acc.children.push(scanChild(nodePath))
